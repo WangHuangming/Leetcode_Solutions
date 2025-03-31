@@ -1,5 +1,3 @@
-package StringToIntegerAtoi;
-
 public class Driver{
     public static void main(String[] args) {
         Solution text=new Solution();

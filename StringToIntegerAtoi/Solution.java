@@ -1,31 +1,39 @@
-package StringToIntegerAtoi;
-
 class Solution {
     public int myAtoi(String s) {
+        // Check for leading whitespace
         s = s.trim();
         if (s.isEmpty()) {
             return 0;
         }
-
-        int ans = 0, i = 0;
-        boolean neg = s.charAt(0) == '-';
-        boolean pos = s.charAt(0) == '+';
-
-        if (neg || pos) {
+        boolean isPositive = true;
+        int i=0;
+        long result = 0;
+        
+        // Check for sign
+        if(s.charAt(i)=='-'){
+            isPositive = false;
+            i++;
+        }else if(s.charAt(i)=='+'){
             i++;
         }
 
-        while (i < s.length() && Character.isDigit(s.charAt(i))) {
-            int digit = s.charAt(i) - '0';
-
-            if (ans > Integer.MAX_VALUE / 10 || (ans == Integer.MAX_VALUE / 10 && digit > Integer.MAX_VALUE % 10)) {
-                return neg ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        // remove leading zeros
+        while(i < s.length() && s.charAt(i) == '0'){
+            i++;
+        }
+        // Convert string to integer
+        while(i < s.length() && Character.isDigit(s.charAt(i))) {
+            result = result * 10 + (s.charAt(i) - '0');
+            i++;
+            if (result-1 > Integer.MAX_VALUE) {
+                break; // Break if result exceeds Integer.MAX_VALUE
             }
-
-            ans = ans * 10 + digit;
-            i++;
         }
+        
+        // Apply sign
+        result = isPositive ? result : -result;
 
-        return neg ? -ans : ans;
+        // Check for overflow and underflow
+        return (int)Math.max((long)Integer.MIN_VALUE, Math.min(result, (long)Integer.MAX_VALUE));
     }
 }

@@ -1,5 +1,6 @@
 package LinkedListCycle;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -29,13 +30,42 @@ import java.util.Set;
 //         }
 //         return false;
 //     }
+
+//     public ListNode detectCycle(ListNode head) {
+//         HashSet<ListNode> nodes = new HashSet<>();
+//         ListNode curr = head;
+//         while(curr!=null){
+//             if(nodes.contains(curr)){
+//                 return curr;
+//             }
+//             nodes.add(curr);
+//             curr=curr.next;
+//         }
+//         return null;
+//     }
 // }
 
-//second trail: using two pointers
-//time complexity: O(n)
-//space complexity: O(1)
+// second trail: using two pointers
+// time complexity: O(n)
+// space complexity: O(1)
 class Solution {
     public boolean hasCycle(ListNode head) {
+        if(head==null){
+            return false;
+        }
+        ListNode slow=head;
+        ListNode fast=head.next;
+        while(slow!=fast){
+            if(fast==null||fast.next==null){
+                return false;
+            }
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return true;
+    }
+
+    public boolean detectCycle(ListNode head) {
         if(head==null){
             return false;
         }

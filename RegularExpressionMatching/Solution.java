@@ -2,35 +2,36 @@ package RegularExpressionMatching;
 
 public class Solution {
     public boolean isMatch(String s, String p) {
-        if(s.equals(p)){
+        int indexS=s.length()-1;
+        int indexP=p.length()-1;
+        return isMatch(s, p, indexS, indexP);
+    }
+
+    public boolean isMatch(String s, String p, int indexS, int indexP) {
+        // base cases
+        if (indexS == -1 && indexP ==-1) {
             return true;
         }
-        char a1='.';
-        char a2='*';
-        if(p.charAt(0)==a2){
+        if (indexS != -1 && indexP ==-1) {
             return false;
         }
-        
-        int i=0;
-        int j=0;
-        while(i<s.length() &&j<p.length()){
-            if(s.charAt(i)!=p.charAt(j) && p.charAt(j)!=a1 && p.charAt(j)!=a2){
+        if( indexS == -1 && indexP !=-1) {
+            if (p.charAt(indexP) == '*') {
+                return isMatch(s, p, indexS, indexP - 2);
+            } else {
                 return false;
             }
-            else if(p.charAt(j)==a2){
-                if(s.charAt(i)==p.charAt(j-1)||p.charAt(j-1)==a1){
-                    j--;
-                }
-                else{
-                    i--;
-                }
-            }
-            i++;
-            j++;
         }
-        if(i<s.length()&& j>=p.length()){
+
+        if(s.charAt(indexS) == p.charAt(indexP) || p.charAt(indexP) == '.'){
+            return isMatch(s, p, indexS - 1, indexP - 1);
+        } else if(p.charAt(indexP) == '*'){
+            if(s.charAt(indexS) == p.charAt(indexP - 1) || p.charAt(indexP - 1) == '.'){
+                return isMatch(s, p, indexS, indexP - 2) || isMatch(s, p, indexS - 1, indexP);
+            }
+            return isMatch(s, p, indexS, indexP - 2);
+        }else{
             return false;
         }
-        return true;
     }
 }
